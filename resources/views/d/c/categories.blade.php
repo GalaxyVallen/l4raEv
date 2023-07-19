@@ -16,14 +16,17 @@
 @endif
 
 <div class="w-100">
-  <a href="/dashboard/posts/new" class="btn btn-dark mb-3"><i class="bi bi-plus-lg me-1"></i>Add new category</a>
+  <a href="/dashboard/categories/create" class="btn btn-dark mb-3"><i class="bi bi-plus-lg me-1"></i>Add new category</a>
 
-  <div class="row w-100">
-
-@foreach ($categories as $c)
-    {{ $c }}
-@endforeach
-    
+  <div class="d-flex gap-1">
+    {{-- {{ ddd($posts) }} --}}
+    @foreach ($categories as $c)
+      <div class="">
+        <a href="/posts?c={{ $c->slug }}" class="text-decoration-none fs-5 link-light">
+          <button class="btn btn-dark text-capitalize border-0 text-start rounded fw-semibold">{{ $c->name}} <span class="d-block text-start text-light text-opacity-75 border-top order border-secondary">{{ $c->posts->count() }} Posts</span></button>
+        </a>
+      </div>
+    @endforeach
   </div>
 </div>
 @endsection

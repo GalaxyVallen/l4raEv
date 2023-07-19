@@ -34,7 +34,7 @@
     <div class="text-body-secondary fs-5">By <a href="/posts?a={{ $posts[0]->author->username }}" class="link-offset-2  link-underline link-underline-opacity-0 link-underline-opacity-50-hover fw-semibold text-capitalize">{{ $posts[0]->author->username ?? 'Rei' }}</a href=""><span class="badge ms-2 text-bg-dark p-2  "><a href="/posts?c={{ $posts[0]->category->slug }}" class="link-light link-underline link-underline-opacity-0">{{ $posts[0]->category->name }}</a></span>  
     </div>
     <p class="card-text fs-5"><small class="text-body-secondary">Published {{ $posts[0]->created_at->diffForHumans() }}</small></p>
-    <p class="card-text fs-5 border-bottom mb-2 pb-2">{{ $posts[0]->excrpt }}</p>
+    <p class="card-text fs-5 border-bottom mb-2 pb-2">{!! $posts[0]->excrpt !!}</p>
     <a class="link-offset-2 link-underline link-underline-opacity-0 link-underline-opacity-50-hover" href="/posts/{{ $posts[0]->slug }}">Detail</a>
   </div>
 </div>

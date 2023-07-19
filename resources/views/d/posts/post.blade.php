@@ -6,14 +6,14 @@
 </div>
 <nav aria-label="breadcrumb ">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="/dashboard/posts">Posts</a></li>
+    <li class="breadcrumb-item"><a href="/{{ Str::lower(Auth::user()->username) }}/posts">Posts</a></li>
     <li class="breadcrumb-item active" aria-current="page">{{ $post->title }}</li>
   </ol>
 </nav>
 <div class="mb-3">
-  <a href="/dashboard/posts" class="btn btn-outline-primary">Back</a>
-  <a href="/dashboard/posts/{{ $post->slug }}/edit" class="btn btn-outline-warning">Edit</a>
-  <form action="/dashboard/posts/{{ $post->slug }}" method="POST" class="d-inline">
+  <a href="/{{ Str::lower(Auth::user()->username) }}/posts" class="btn btn-outline-primary">Back</a>
+  <a href="/{{ Str::lower(Auth::user()->username) }}/posts/{{ $post->slug }}/edit" class="btn btn-outline-warning">Edit</a>
+  <form action="/{{ Str::lower(Auth::user()->username) }}/posts/{{ $post->slug }}" method="POST" class="d-inline">
     @method('delete')
     @csrf
     <button class="btn btn-outline-danger" onclick="return confirm('Delete it?')">Delete</button>
@@ -25,9 +25,9 @@
   <div class="col-lg-8">
   <h3 class="display-6 text-capitalize">{{ $post->title }}</h3>
   @if ($post->thumbnail)
-  <img src="{{ asset('storage/' . $post->thumbnail) }}" alt="By {{ $post->author->name }}" class="rounded my-2 img-fluid">
+  <img src="{{ asset('storage/' . $post->thumbnail) }}" alt="By {{ $post->author->name }}" class="rounded border my-2 img-fluid">
   @else      
-  <img src="https://placehold.co/1200x400?text={{ $post->category->name }}" alt="{{ $post->category->name }}" class="rounded my-2 img-fluid">
+  <img src="https://placehold.co/1200x400?text={{ $post->category->name }}" alt="{{ $post->category->name }}" class="rounded border my-2 img-fluid">
   @endif
   <div class="lead mb-3 mt-2 lh-sm">
     {!! $post->content !!}

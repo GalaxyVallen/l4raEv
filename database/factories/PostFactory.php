@@ -23,7 +23,7 @@ class PostFactory extends Factory
             // 'content' => '<p>' . implode('<p></p>', fake()->paragraphs(mt_rand(3, 6))) . '</p>',
             'content' => collect(fake()->paragraphs(mt_rand(3, 7)))->map(fn ($p) => "<p>$p</p>")->implode(''),
             'user_id' => mt_rand(1, 5),
-            'category_id' => mt_rand(1, 3)
+            'category_id' => mt_rand(1, 5)
         ];
     }
 }

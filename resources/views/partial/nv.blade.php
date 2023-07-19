@@ -24,10 +24,10 @@
         @auth
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Welcome {{ Auth::user()->name }}
+            <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('img/avatar.png') }}" width="32rem" height="32rem" alt="{{ Auth::user()->name ?: 'Guest' }}" class="object-fit-cover rounded-circle shadow">
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
+            <li><a class="dropdown-item" href="/profile">Profile</a></li>
             <li><hr class="dropdown-divider"></li>
             <li>
               <form action="/logout" method="POST">
@@ -38,9 +38,16 @@
           </ul>
         </li>
         @else
-          <li class="nav-item">
-            <a href="/login" class="nav-link btn btn-danger bg-body-tertiary">Sign In</a>
-          </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="{{ asset('img/avatar.png') }}" width="32rem" height="32rem" alt="Guest" class="rounded-circle shadow">
+          </a>
+          <ul class="dropdown-menu">
+            <li class="px-2">
+              <a href="/login" class="nav-link btn bg-body-tertiary">Sign In</a>
+            </li>
+          </ul>
+        </li>
         @endauth
         </ul>
 

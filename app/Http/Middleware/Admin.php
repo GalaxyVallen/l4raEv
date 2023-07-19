@@ -17,8 +17,8 @@ class Admin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::guest() || !Auth::user()->is_admin) {
-            abort(403);
+        if (!Auth::check() || Auth::user()->role_id != 'admin') {
+            abort(403, 'You gotta be an admin for that!');
         }
 
         return $next($request);

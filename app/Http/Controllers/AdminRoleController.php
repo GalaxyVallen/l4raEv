@@ -2,26 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
+use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Post;
 
-class AdminCategoryController extends Controller
+class AdminRoleController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {
-        $this->authorize('admin');
-        return view('d.c.categories', [
-            'categories' => Category::all()
-            // 'posts' => Post::all()
-        ]);
+        // $users = User::all();
+
+        // $user = $users->find(1)->name;
+        // dd($user);
+        return redirect('/dashboard/roles/create');
     }
 
     /**
@@ -31,8 +29,8 @@ class AdminCategoryController extends Controller
      */
     public function create()
     {
-        return view('d.c.new', [
-            'categories' => Category::all()
+        return view('d.r.role', [
+            'users' => User::all()
         ]);
     }
 
@@ -44,23 +42,32 @@ class AdminCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $validData = $request->validate([
-            'name' => 'required|unique:categories|max:15',
-            'slug' => 'required|unique:categories|max:15'
+        $validatedData = $request->validate([
+            'user_id' => 'required',
+            'role' => 'required|in:admin,editor,author',
         ]);
 
-        Category::create($validData);
+        // Ambil pengguna berdasarkan ID
+        $users = User::where('name', 'like', '%' . $validatedData['user_id'] . '%')
+            ->first();
 
-        return redirect('/dashboard/categories')->with('succss', 'Successfully added new category');
+        // Setel role pengguna
+        $users->role_id = $validatedData['role'];
+
+        // Simpan perubahan
+        $users->save();
+
+        // Redirect atau tampilkan pesan sukses
+        return redirect()->back()->with('success', 'Role berhasil ditambahkan pada pengguna.');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Category  $category
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category)
+    public function show(User $user)
     {
         //
     }
@@ -68,10 +75,10 @@ class AdminCategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Category  $category
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit(User $user)
     {
         //
     }
@@ -80,10 +87,10 @@ class AdminCategoryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Category  $category
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, User $user)
     {
         //
     }
@@ -91,10 +98,10 @@ class AdminCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Category  $category
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy(User $user)
     {
         //
     }

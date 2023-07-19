@@ -31,12 +31,27 @@
           <p class="invalid-feedback text-bg-danger rounded ps-1 mb-0">{{ $message }}</p>
           @enderror
         </div>
-    
-        <button class="btn btn-outline-light mt-4 w-100 py-2" type="submit">Sign in</button>
+        <div class="mt-1 form-check">
+          <input type="checkbox" class="form-check-input" onclick="sa()" id="c">
+          <label class="form-check-label" for="c">Check me out</label>
+        </div>
+      
+        <button class="btn btn-outline-light mt-2 w-100 py-2" type="submit">Sign in</button>
         <p class="mt-3 mb-3 pt-3 text-center border-top"><a class="link-light link-underline" href="/register">Sign Up here!</a></p>
       </form>
     </main>
   </div>
 </div>
+
+<script>
+  function sa() {
+    const c = document.getElementById('pass');
+    if (c.type == 'password') {
+      c.type = 'text'
+    } else {
+      c.type='password'
+    }
+  }
+</script>
 
 @endsection

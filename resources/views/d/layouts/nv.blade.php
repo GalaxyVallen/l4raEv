@@ -1,20 +1,45 @@
-<header class="navbar sticky-top bg-dark flex-md-nowrap p-0 shadow" data-bs-theme="dark">
-  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white" href="#">Gss</a>
+<nav class="navbar sticky-top navbar-expand-lg bg-dark border-bottom border-bottom-dark" data-bs-theme="dark">
+  <div class="container container-lg">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link {{ Request::is('dashboard') ? 'active' : ''; }}" aria-current="page" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {{ Request::is('new') ? 'active' : ''; }}" href="/new">New</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {{ Request::is('*/posts') ? 'active' : ''; }}" href="/{{ Str::lower(Auth::user()->username) }}/posts">Posts</a>
+        </li>
+      </ul>
 
-  <ul class="navbar-nav flex-row d-md-none">
-    <li class="nav-item text-nowrap">
-      <button class="nav-link px-3 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSearch" aria-controls="navbarSearch" aria-expanded="false" aria-label="Toggle search">
-        <svg class="bi"><use xlink:href="#search"/></svg>
-      </button>
-    </li>
-    <li class="nav-item text-nowrap">
-      <button class="nav-link px-3 text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-        <svg class="bi"><use xlink:href="#list"/></svg>
-      </button>
-    </li>
-  </ul>
+      <ul class="navbar-nav ms-auto">     
+        @auth
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Welcome {{ Auth::user()->username }}
+          </a>
+          <ul class="dropdown-menu">
+            @can('admin')                
+            <li><a class="dropdown-item" href="/dashboard">Settings</a></li>
+            <li><a class="dropdown-item" href="/dashboard/categories">Category</a></li>
+            <li><a class="dropdown-item" href="/dashboard/roles">Role</a></li>
+            @endcan
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <form action="/logout" method="POST">
+                @csrf
+                <button type="submit" class="dropdown-item text-bg-danger">Logout</button>
+              </form>
+            </li>
+          </ul>
+        </li>
+        @endauth
+        </ul>
 
-  <div id="navbarSearch" class="navbar-search w-100 collapse">
-    <input class="form-control w-100 rounded-0 border-0" type="text" placeholder="Search" aria-label="Search">
+    </div>
   </div>
-</header>
+</nav>

@@ -1,7 +1,7 @@
 @extends('d.layouts.body')
 
 @section('main')
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+<div class="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
   <h1 class="h2">Create new post</h1>
 </div>
 
@@ -15,7 +15,7 @@
 @endif
 
 
-<div class="row">
+<div class="row justify-content-center">
   <div class="col-lg-7">
     <form method="POST" action="/dashboard/posts" enctype="multipart/form-data" class="mb-5"> 
       @csrf
@@ -55,7 +55,7 @@
       </div>
       <div class="mb-3">
         <label for="thumbnail" class="form-label">Select Thumbnail</label>
-        <input type="file" class="form-control @error('thumbnail') is-invalid @enderror" name="thumbnail" id="thumbnail" onchange="previewImage()">
+        <input type="file" class="form-control @error('thumbnail') is-invalid @enderror" accept="image/*" name="thumbnail" id="thumbnail" onchange="previewImage()">
         @error('thumbnail')
           <p class="text-danger mb-0">{{ $message }}</p>
         @enderror
@@ -100,7 +100,6 @@
     const image = document.querySelector('#thumbnail');
     const imgPreview = document.querySelector('.img-preview')
 
-    imgPreview.style.display =  'block';
     const oFReader = new FileReader();
     oFReader.readAsDataURL(image.files[0]);
     oFReader.onload = function(oFREvent) {

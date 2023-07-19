@@ -3,14 +3,16 @@
 // use App\Models\Post;
 // use App\Models\User;
 
-use App\Http\Controllers\AboutController;
-use App\Http\Controllers\AdminCategoryController;
-use App\Http\Controllers\CatergoryController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PostController;
-use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\AboutController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\AdminRoleController;
+use App\Http\Controllers\CatergoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AdminCategoryController;
+use App\Http\Controllers\ProfileController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,13 +24,11 @@ use App\Http\Controllers\DashboardController;
 |
 */
 
-Route::get('/', function () {
-    return view('home', [
-        'active' => 'h',
-        'title' => 'Home',
-        'name' => 'Rei'
-    ]);
-});
+Route::get('/', fn () =>  view('home', [
+    'active' => 'h',
+    'title' => 'Home',
+    'name' => 'Rei'
+]));
 
 Route::get('/about', [AboutController::class, 'index']);
 Route::get('/blog', [PostController::class, 'index']);
@@ -37,25 +37,29 @@ Route::get('/posts', [PostController::class, 'index']);
 //ambil apappun didalam /
 Route::get('posts/{post:slug}', [PostController::class, 'detail']);
 Route::get('/category', [CatergoryController::class, 'index']);
-Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
-Route::post('/login', [LoginController::class, 'auth']);
-Route::post('/logout', [LoginController::class, 'exit']);
-Route::get('/register', [RegController::class, 'index'])->middleware('guest');
-Route::post('/register', [RegController::class, 'store']);
 
-Route::get(
-    '/dashboard',
-    function () {
-        return view('d.dashboard', [
-            'active' => ' ',
-            'title' => 'Dashboard'
-        ]);
-    }
-)->middleware('auth');
+Route::controller(LoginController::class)->group(function () {
+    Route::get('/login', 'index')->name('login')->middleware('guest');
+    Route::post('/login', 'auth');
+    Route::post('/logout', 'exit');
+});
 
-Route::get('/dashboard/posts/new', [DashboardController::class, 'create'])->name('new');
-Route::resource('/dashboard/posts', DashboardController::class)->middleware('auth');
+Route::controller(RegController::class)->group(function () {
+    Route::get('/register', 'index')->middleware('guest');
+    Route::post('/register', 'store');
+});
+
+Route::resource('/profile', ProfileController::class)->middleware('auth');
+
+Route::get('/new', [DashboardController::class, 'create'])->name('new')->middleware('auth');
+Route::resource('/{username}/posts', DashboardController::class)->middleware('auth');
+
 Route::resource('/dashboard/categories', AdminCategoryController::class);
+Route::resource('/dashboard/roles', AdminRoleController::class)->middleware('admin');
+
+
+
+// Route::get('/dashboard/categories/new', [AdminCategoryController::class, 'create']);
 // Route::get('/categories/{category:slug}', function (Category $category) {
 //     return view('posts', [
 //         'active' => 'c',

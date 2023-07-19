@@ -34,20 +34,7 @@ class DatabaseSeeder extends Seeder
 
         User::factory(5)->create();
 
-        Category::create([
-            'name' => 'Unit 00',
-            'slug' => 'unit-00',
-        ]);
-
-        Category::create([
-            'name' => 'Unit 02',
-            'slug' => 'unit-02',
-        ]);
-
-        Category::create([
-            'name' => 'Unit 01',
-            'slug' => 'unit-01',
-        ]);
+        Category::factory(5)->create();
 
         Post::factory(25)->create();
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -21,9 +22,9 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('d.posts.posts', [
-            'posts' => Post::where('user_id', Auth::user()->id)->get()
-        ]);
+        $posts = Post::where('user_id', Auth::user()->id)->get();
+        $title = "Your posts";
+        return view('d.posts.posts', compact('posts', 'title'));
     }
 
     /**
@@ -33,9 +34,9 @@ class DashboardController extends Controller
      */
     public function create()
     {
-        return view('d.posts.new', [
-            'categories' => Category::all()
-        ]);
+        $categories = Category::all();
+        $title = 'New Post';
+        return view('d.posts.new', compact('categories', 'title'));
     }
 
     /**
@@ -69,7 +70,7 @@ class DashboardController extends Controller
 
         Post::create($validData);
 
-        return redirect('/dashboard/posts')->with('succss', 'Successfully added new post');
+        return redirect('/{username}/posts')->with('succss', 'Successfully added new post');
     }
 
     /**
@@ -78,13 +79,14 @@ class DashboardController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post)
+    public function show($x, Post $post)
     {
         if ($post->author->id != Auth::user()->id) {
-            abort(403);
+            abort(403, 'cannot access this post');
         }
 
         return view('d.posts.post', [
+            'title' => 'Detail post',
             'post' => $post
         ]);
     }
@@ -95,17 +97,19 @@ class DashboardController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function edit(Post $post)
+    public function edit($x, Post $post)
     {
         if ($post->author->id != Auth::user()->id) {
-            abort(403);
+            // abort(403, 'cannot access this post');
         }
 
         return view('d.posts.edit', [
+            'title' => 'Edit Post',
             'post' => $post,
             'categories' => Category::all()
         ]);
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -114,7 +118,7 @@ class DashboardController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update($x, Request $request, Post $post)
     {
         $data = [
             'title' => 'required|max:175',
@@ -149,7 +153,7 @@ class DashboardController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
+    public function destroy($x,Post $post)
     {
         if ($post->thumbnail) {
             Storage::delete($post->thumbnail);
